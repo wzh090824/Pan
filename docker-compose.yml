@@ -1,0 +1,16 @@
+services:
+  pan:
+    build:
+      context: .
+    image: pan-cloud-storage:local
+    container_name: pan
+    environment:
+      PORT: "8080"
+      AUTH_CODE: ${AUTH_CODE:?Set AUTH_CODE in .env}
+      BASIC_USER: ${BASIC_USER:-admin}
+      BASIC_PASS: ${BASIC_PASS:?Set BASIC_PASS in .env}
+    ports:
+      - "7658:8080"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

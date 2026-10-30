@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <script data-cfasync="false">
+    (() => {
+      const root = document.documentElement;
+      let cached = {};
+      try { cached = JSON.parse(localStorage.getItem('vuex') || '{}') || {}; } catch {}
+      const hour = new Date().getHours();
+      const dark = cached.cusDarkMode && typeof cached.useDarkMode === 'boolean'
+        ? cached.useDarkMode
+        : matchMedia('(prefers-color-scheme: dark)').matches || hour >= 22 || hour < 6;
+      root.classList.add('entry-loading');
+      root.classList.toggle('dark', dark);
+      const configReady = fetch('/api/userConfig', { credentials: 'same-origin' })
+        .then(response => response.ok ? response.json() : null)
+        .catch(() => null);
+      window.__siteEntryBootstrap = { config: cached.userConfig, configReady };
+    })();
+  </script>
+  <style>
+    html.entry-loading{background:#f2f5f3}
+    html.entry-loading.dark{background:#101a18;color-scheme:dark}
+  </style>
+  <link rel="preload" href="/entry/entry-loader.c76da827.js" as="script">
+  <link rel="icon" href="/static/media/pan-logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/static/media/pan-logo.svg">
+  <meta name="description" content="Pan - Self-hosted file cloud storage">
+  <meta name="keywords" content="Pan, file storage, cloud drive, file sharing">
+  <meta name="author" content="Pan">
+  <title>Pan</title>
+  <link rel="stylesheet" href="/entry/pan-loader.css">
+  <link rel="stylesheet" href="/css/chunk-vendors.c8a4c1c7.css">
+  <link rel="stylesheet" href="/css/app.15960487.css">
+  <script data-cfasync="false" defer="defer" src="/js/chunk-vendors.a8ef1239.js"></script>
+  <script data-cfasync="false" defer="defer" src="/js/app.717a0725.js"></script>
+</head>
+<body>
+  <noscript><strong>Pan needs JavaScript enabled to display the file dashboard.</strong></noscript>
+  <div id="entry-loader" role="status" aria-live="polite" aria-label="Loading">
+    <div class="entry-loader-content">
+      <div class="entry-loader-name" aria-hidden="true"></div>
+      <div class="entry-loader-progress" aria-hidden="true">
+        <div class="entry-loader-mark-travel">
+          <div class="entry-loader-mark"><img class="entry-loader-pan-icon" src="/static/media/pan-logo.svg" alt=""></div>
+          <div class="entry-loader-bar"></div>
+        </div>
+        <div class="entry-loader-track"></div>
+      </div>
+    </div>
+  </div>
+  <div id="app" inert></div>
+  <script data-cfasync="false" src="/entry/entry-loader.c76da827.js"></script>
+</body>
+</html>
